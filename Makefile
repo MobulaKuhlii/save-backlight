@@ -14,18 +14,10 @@
 # this program. If not, see <https://www.gnu.org/licenses/>.
 
 
-PREFIX  ?= /usr/local
-DESTDIR ?=
-
-INITDDIR ?= $(DESTDIR)$(PREFIX)/etc/init.d
-
-INSTALL ?= install -D -m755
-RM      ?= rm -f
-
 .PHONY: install
 install:
-	$(INSTALL) save-backlight $(INITDDIR)/save-backlight
+	install -D -m755 save-backlight /etc/init.d/save-backlight
 
 .PHONY: uninstall
 uninstall:
-	$(RM) $(INITDDIR)/save-backlight
+	rm -f /etc/init.d/save-backlight

@@ -21,7 +21,6 @@ description="An OpenRC service for restoring the last brightness level on reboot
 readonly CACHE_DIR="/var/cache/save-backlight"
 
 start() {
-	ebegin "Restoring the screen brightness"
 
 	checkpath -D -o "root:root" "${CACHE_DIR}"
 
@@ -31,27 +30,16 @@ start() {
 
 			if [ ${blight} -ne 0 ]; then
 				echo ${blight} > "/sys/class/backlight/${card}/brightness"
-			else
-				ewarn "Setting the brightness to zero would cause the"
-				ewarn "screen to turn off (skipping)"
 			fi
-		else
-			ewarn "Cache is empty (skipping)"
 		fi
-
-		eend $? "Cannot restore the brightness of ${card}"
 	done
 }
 
 stop() {
-	ebegin "Saving the screen brightness"
-
 	checkpath -D -o "root:root" "${CACHE_DIR}"
 
 	for card in $(basename /sys/class/backlight/*); do
 		cat "/sys/class/backlight/${card}/brightness" \
 			> "${CACHE_DIR}/${card}"
-
-		eend $? "Cannot save the brightness of ${card}"
 	done
 }
